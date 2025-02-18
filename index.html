@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serverless To-Do List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>To-Do List</h2>
+        
+        <div class="input-container">
+            <input type="text" id="taskInput" placeholder="Enter task">
+            <button onclick="addTask()">Add Task</button>
+        </div>
+
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        const apiUrl = "https://yfho2sxlek.execute-api.ap-south-1.amazonaws.com/dev/tasks"; 
+
+        function addTask() {
+            const taskName = document.getElementById("taskInput").value;
+            if (taskName.trim() === "") return;
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ taskName: taskName })
+            }).then(response => response.json())
+            .then(data => {
+                document.getElementById("taskInput").value = "";
+                getTasks();
+            });
+        }
+
+        function getTasks() {
+            fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                let tasks = typeof data.body === "string" ? JSON.parse(data.body) : data.body;
+                let taskList = document.getElementById("taskList");
+                taskList.innerHTML = "";
+                tasks.forEach(task => {
+                    let li = document.createElement("li");
+                    li.innerText = task.taskName;
+                    taskList.appendChild(li);
+                });
+            })
+            .catch(error => console.error("Error fetching tasks:", error));
+        }
+
+        getTasks();
+    </script>
+</body>
+</html>
