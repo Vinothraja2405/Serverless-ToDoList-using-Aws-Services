@@ -20,7 +20,7 @@ Deployment: AWS S3 (for frontend hosting), GitHub
 
 
 1️⃣ Clone the Repository
-git clone https://github.com/yourusername/serverless-todo-list.git
+git clone (https://github.com/Vinothraja2405/Serverless-ToDoList-using-Aws-Services)
 cd serverless-todo-list
 
 2️⃣ Set Up the AWS Backend
